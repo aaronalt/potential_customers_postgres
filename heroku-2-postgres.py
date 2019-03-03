@@ -34,10 +34,7 @@ def create_customers_table():
 def store_customers_in_table():
 
         heroku_conn = psycopg2.connect(dbname=databasename,user=username,password=password,host=host,port=port)
-
         cursor = heroku_conn.cursor()
-
-        # cursor.execute("INSERT INTO potential_customers (customer_name,country,status,type,address,url,email,phone,source,contacted_y_n,contact_date,notes) VALUES (%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s,%%s);")
 
         sheet='https://docs.google.com/spreadsheets/d/1qGnU-OE4mcVf-Gnc1iINpx2pqH5komEWk1_9shmX6nY/export?format=csv&id=1qGnU-OE4mcVf-Gnc1iINpx2pqH5komEWk1_9shmX6nY'
 
@@ -94,7 +91,7 @@ def store_customers_in_table():
         b['contact_results'] = b['contact_results'].str.replace(',','.')
         b['notes'] = b['notes'].str.replace(';','.')
         b['notes'] = b['notes'].str.replace(',','')
-        print(b['url'])
+        
         b.to_csv('pot-cust.csv', columns=['customer_name','country','status','CompanyType','address','url','email','phone','source','contacted_y_n','contact_date','contact_results','notes'])
        
         with open('pot-cust.csv','r') as file:
@@ -126,13 +123,8 @@ except Exception as e:
 
 """
 2/3/19:
-creating new table
-new table created
-Preparing to load 'potential_customers' with data
-extra data after last expected column
-CONTEXT:  COPY potential_customers, line 1: "0,OES DISTRIMED,Albania,Potential Customer,Distributor,Nikolle Kacorri; No.1 Postal Code 1022; TIRAN..."
-
-- csv file is messed up after 'address', i think due to \n within the cell. How to delete these...
+- credentials are hard-coded...needs to be fixed
+- b dataframe has unecessary amount of fixes, could be more efficient 
 
 """
 
